@@ -1,7 +1,7 @@
 # Names held for the tmt.page owner.
 # Held names show a "Reserved" page and can't be claimed by the public.
-# Point one somewhere:  POST /api/admin {"slug":"x","action":"assign","url":"https://..."}
-# Lines starting with # are comments. Load with:  POST /api/admin {"action":"hold","slugs":[...]}
+# Point one somewhere: POST /api/admin {"slug":"x","action":"assign","url":"https://..."}
+# Lines starting with # are comments. Load with: POST /api/admin {"action":"hold","slugs":[...]}
 
 ## Single characters
 a b c d e f g h i j k l m n o p q r s t u v w x y z
@@ -12,7 +12,7 @@ ai ar ok go me my us we hi tv pc ux ui pm qa hr it io id vr ml db os cv pr ad fx
 
 ## Navigation and generic intent
 home start go next top best now here link links page info faq hub portal map
-menu index main all list more open search find top10 today live
+menu main all list more open search find top10 today live
 
 ## Communication
 mail email inbox chat call text sms meet meeting zoom teams dm invite rsvp newsletter subscribe
@@ -21,12 +21,12 @@ feedback survey form forms poll vote ask
 ## Work and productivity
 docs doc notes note wiki todo tasks task plan plans calendar cal schedule agenda team work
 project projects okr okrs roadmap spec specs design deck slides sheet sheets reports
-dashboard-v2 kpi metrics data files file drive share upload download downloads standup sprint
+kpi metrics data files file drive share upload download downloads standup sprint
 retro onboarding handbook policy policies template templates
 
 ## Careers and personal brand
-resume cv-pdf portfolio jobs job careers hire hiring interview intro bio
-card vcard contact-card speaker talk talks
+resume portfolio jobs job careers hire hiring interview intro bio
+card vcard speaker talk talks
 
 ## Learning
 learn course courses class classes study quiz quizzes test exam exams practice flashcards
@@ -36,7 +36,7 @@ book books read reading
 ## Money and commerce (held to prevent payment-scam links)
 pay payment payments invoice billing donate donation tip tips give fund shop store buy sell
 sale deals deal coupon coupons promo offer gift gifts order orders checkout cart pricing
-subscribe-now refund wallet bank crypto
+refund wallet bank crypto
 
 ## Social and media
 blog news post posts video videos watch music podcast podcasts photo photos pics gallery
