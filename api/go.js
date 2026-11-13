@@ -13,6 +13,14 @@ export async function GET(request) {
   if (!redisConfigured()) return page({ title: "Unavailable", status: 503, body: `<h1>Back soon</h1><p>Storage isn't connected yet.</p>` });
 
   const link = toObject(await redis("HGETALL", `link:${slug}`));
+  if (link.status === "held") {
+    return page({
+      title: "Reserved",
+      status: 404,
+      body: `<h1>Reserved</h1><p><code>tmt.page/${esc(slug)}</code> is reserved and isn't available to claim.</p>
+<p class="actions"><a class="btn" href="/">Make your own link</a></p>`,
+    });
+  }
   if (!link.url) return notFound(slug);
 
   if (link.status === "disabled") {

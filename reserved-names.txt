@@ -1,0 +1,63 @@
+# Names held for the tmt.page owner.
+# Held names show a "Reserved" page and can't be claimed by the public.
+# Point one somewhere:  POST /api/admin {"slug":"x","action":"assign","url":"https://..."}
+# Lines starting with # are comments. Load with:  POST /api/admin {"action":"hold","slugs":[...]}
+
+## Single characters
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+0 1 2 3 4 5 6 7 8 9
+
+## Two-letter names with obvious meaning
+ai ar ok go me my us we hi tv pc ux ui pm qa hr it io id vr ml db os cv pr ad fx ev 3d
+
+## Navigation and generic intent
+home start go next top best now here link links page info faq hub portal map
+menu index main all list more open search find top10 today live
+
+## Communication
+mail email inbox chat call text sms meet meeting zoom teams dm invite rsvp newsletter subscribe
+feedback survey form forms poll vote ask
+
+## Work and productivity
+docs doc notes note wiki todo tasks task plan plans calendar cal schedule agenda team work
+project projects okr okrs roadmap spec specs design deck slides sheet sheets reports
+dashboard-v2 kpi metrics data files file drive share upload download downloads standup sprint
+retro onboarding handbook policy policies template templates
+
+## Careers and personal brand
+resume cv-pdf portfolio jobs job careers hire hiring interview intro bio
+card vcard contact-card speaker talk talks
+
+## Learning
+learn course courses class classes study quiz quizzes test exam exams practice flashcards
+lesson lessons tutorial tutorials guide guides training school homework syllabus library
+book books read reading
+
+## Money and commerce (held to prevent payment-scam links)
+pay payment payments invoice billing donate donation tip tips give fund shop store buy sell
+sale deals deal coupon coupons promo offer gift gifts order orders checkout cart pricing
+subscribe-now refund wallet bank crypto
+
+## Social and media
+blog news post posts video videos watch music podcast podcasts photo photos pics gallery
+stream events event tickets party wedding baby birthday games game play
+
+## Big brands and platforms (held so nobody can impersonate them with tmt.page links)
+google gmail youtube microsoft msft office outlook azure xbox windows bing copilot github
+linkedin apple icloud amazon aws prime netflix spotify facebook fb meta instagram ig whatsapp
+twitter tiktok reddit discord slack paypal venmo zelle cashapp stripe openai chatgpt anthropic
+claude dropbox notion figma canva adobe uber airbnb ebay walmart target costco irs
+usps ups fedex dhl coinbase binance steam epic roblox minecraft nintendo playstation
+
+## Government and safety terms (held to prevent phishing)
+gov official verify verification secure security password reset unlock
+recovery 2fa mfa tax taxes refund-status benefits va dmv ssa medicare covid vaccine alert
+alerts emergency
+
+## Owner's own names and projects
+sam sam-england samengland england senglan libra librastudy howilearn mnemonic studymnemonic
+asvab asvablibrary practicetestlibrary practicetest createblockevent sixlongbows tmt-page
+warm amiwarm am-i-warm tools tool
+
+## Local (Hampton Roads / Virginia)
+va-beach norfolk hampton newportnews newport-news yorktown williamsburg virginia 757

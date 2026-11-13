@@ -162,6 +162,25 @@ test("reports auto-disable after 3 distinct reporters", async () => {
   assert.equal((await visit("sketchy")).status, 410);
 });
 
+test("owner can hold names in bulk, then assign one", async () => {
+  const auth = { authorization: "Bearer admin-token-0123456789" };
+  const call = (body) => admin.POST(new Request("https://tmt.page/api/admin", { method: "POST", headers: auth, body: JSON.stringify(body) }));
+  const res = await (await call({ action: "hold", slugs: ["Home", "docs", "mylink", "camping", "bad name"] })).json();
+  assert.equal(res.held, 2);
+  assert.deepEqual(res.taken, ["mylink"]);
+  assert.deepEqual(res.invalid, ["camping", "bad name"]);
+
+  const held = await visit("home");
+  assert.equal(held.status, 404);
+  assert.match(await held.text(), /Reserved/);
+  assert.equal((await create({ url: "https://example.com", slug: "home" }, "3.3.3.3")).status, 409);
+
+  await call({ slug: "home", action: "assign", url: "https://tmt.page/camping/" });
+  const r = await visit("home");
+  assert.equal(r.status, 302);
+  assert.equal(r.headers.get("location"), "https://tmt.page/camping/");
+});
+
 test("admin requires token; can list, enable, delete", async () => {
   const unauth = await admin.GET(new Request("https://tmt.page/api/admin?view=reports"));
   assert.equal(unauth.status, 401);

@@ -56,7 +56,7 @@ function isPrivateHost(host) {
 }
 
 /** Returns { url } with a normalized URL, or { error }. */
-export function checkUrl(raw) {
+export function checkUrl(raw, { allowSelf = false } = {}) {
   if (typeof raw !== "string" || !raw.trim()) return { error: "Enter a URL." };
   let input = raw.trim();
   if (!/^[a-z][a-z0-9+.-]*:/i.test(input)) input = `https://${input}`;
@@ -70,7 +70,7 @@ export function checkUrl(raw) {
 
   const host = u.hostname.toLowerCase();
   if (isPrivateHost(host)) return { error: "That address isn't publicly reachable." };
-  if (host === SITE_HOST || host.endsWith(`.${SITE_HOST}`)) return { error: "Links can't point back to tmt.page." };
+  if (!allowSelf && (host === SITE_HOST || host.endsWith(`.${SITE_HOST}`))) return { error: "Links can't point back to tmt.page." };
   if (hostMatches(host, SHORTENER_HOSTS)) return { error: "Please use the final destination, not another short link." };
   if (hostMatches(host, EXTRA_BLOCKED)) return { error: "Links to that site aren't allowed." };
 

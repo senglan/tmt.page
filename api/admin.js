@@ -5,7 +5,7 @@
 // GET  /api/admin?slug=x                → one link + its reports
 // POST /api/admin { slug, action }      → action: "disable" | "enable" | "delete"
 import { redis, tx, toObject, redisConfigured } from "./_lib/redis.js";
-import { SLUG_RE, json } from "./_lib/rules.js";
+import { SLUG_RE, RESERVED, checkUrl, json } from "./_lib/rules.js";
 
 function authorized(request) {
   const token = process.env.ADMIN_TOKEN;
@@ -46,10 +46,41 @@ export async function POST(request) {
   if (!redisConfigured()) return json({ error: "Storage isn't connected yet." }, 503);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Send JSON: { slug, action }" }, 400); }
+
+  // Bulk-hold names for the owner: { action: "hold", slugs: [...] }
+  if (body.action === "hold") {
+    if (!Array.isArray(body.slugs) || body.slugs.length > 1000) return json({ error: "slugs must be an array of up to 1000 names" }, 400);
+    const held = [], taken = [], invalid = [];
+    const now = new Date().toISOString();
+    for (const raw of body.slugs) {
+      const slug = String(raw).trim().toLowerCase();
+      if (!SLUG_RE.test(slug) || RESERVED.has(slug)) { invalid.push(raw); continue; }
+      const won = await redis("HSETNX", `link:${slug}`, "url", "");
+      if (won !== 1) { taken.push(slug); continue; }
+      await redis("HSET", `link:${slug}`, "created", now, "by", "owner", "clicks", 0, "status", "held");
+      held.push(slug);
+    }
+    return json({ ok: true, held: held.length, taken, invalid });
+  }
+
   const slug = String(body.slug || "").toLowerCase();
   if (!SLUG_RE.test(slug)) return json({ error: "Bad slug" }, 400);
 
   switch (body.action) {
+    // Point a name (held or not) at a destination: { slug, action: "assign", url }
+    // Owner links may point back into tmt.page (e.g. warm → /camping/).
+    case "assign": {
+      const u = checkUrl(body.url, { allowSelf: true });
+      if (u.error) return json({ error: u.error }, 400);
+      await redis("HSET", `link:${slug}`, "url", u.url, "status", "active", "by", "owner",
+        "created", new Date().toISOString());
+      await redis("HSETNX", `link:${slug}`, "clicks", 0);
+      break;
+    }
+    // Put an assigned name back on hold.
+    case "hold-one":
+      await redis("HSET", `link:${slug}`, "url", "", "status", "held", "by", "owner");
+      break;
     case "disable":
       await redis("HSET", `link:${slug}`, "status", "disabled");
       break;
@@ -68,7 +99,7 @@ export async function POST(request) {
       ]);
       break;
     default:
-      return json({ error: 'action must be "disable", "enable" or "delete"' }, 400);
+      return json({ error: 'action must be "hold", "assign", "hold-one", "disable", "enable" or "delete"' }, 400);
   }
   return json({ ok: true, slug, action: body.action });
 }
