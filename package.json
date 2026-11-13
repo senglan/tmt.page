@@ -1,0 +1,10 @@
+{
+  "name": "tmt.page",
+  "private": true,
+  "type": "module",
+  "description": "tmt.page — free public short links, plus small single-purpose tools.",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}
