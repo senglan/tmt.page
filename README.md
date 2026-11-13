@@ -4,7 +4,8 @@
 
 | Path | What |
 |---|---|
-| `/` | Shortlink creator |
+| `/` | Shortlink creator (sign in with an emailed link) + your links |
+| `/terms/` `/privacy/` `/abuse/` | Legal pages; abuse@ and dmca@tmt.page forward to the owner |
 | `/<name>` | Redirects to the saved URL (case-insensitive) |
 | `/<name>+` | Preview: shows the destination and visit count, with a report button |
 | `/camping/` | Am I Warm? — camping sleep-system checker |
@@ -38,11 +39,17 @@ camping/       Am I Warm?
 | Var | Required | Notes |
 |---|---|---|
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | yes | Injected by the Vercel ↔ Upstash integration |
+| `RESEND_API_KEY` | yes | Resend sending key restricted to `mail.tmt.page` (magic-link emails) |
+| `MAIL_FROM` | optional | Defaults to `tmt.page <signin@mail.tmt.page>` |
 | `ADMIN_TOKEN` | for admin | ≥16 chars |
 | `IP_SALT` | recommended | Salt for hashing IPs |
-| `SAFE_BROWSING_KEY` | optional | Google Safe Browsing v4 key; checks every new link |
+| `SAFE_BROWSING_KEY` | recommended | Google Safe Browsing v4 key (GCP project `tmt-page-514611`); checks every new link |
 | `BLOCKED_HOSTS` | optional | Comma-separated extra blocked domains |
 | `LIMIT_PER_HOUR`, `LIMIT_PER_DAY`, `LIMIT_GLOBAL_PER_DAY`, `AUTO_DISABLE_REPORTS` | optional | Override defaults |
+
+## Accounts
+
+Passwordless: `POST /api/auth?op=start {email}` emails a one-time link (15 min). The link opens a confirm page whose button POSTs the token (so email scanners can't burn it), which sets an HttpOnly session cookie (30 days). Only signed-in users can create links; each link records its creator's email. Users can remove their own links; removed names stay retired.
 
 ## Moderation
 
@@ -52,6 +59,8 @@ curl -H "Authorization: Bearer $T" "https://tmt.page/api/admin?view=reports"
 curl -H "Authorization: Bearer $T" "https://tmt.page/api/admin?view=recent"
 curl -H "Authorization: Bearer $T" -X POST https://tmt.page/api/admin \
      -d '{"slug":"bad-link","action":"disable"}'   # or "enable" / "delete"
+curl -H "Authorization: Bearer $T" -X POST https://tmt.page/api/admin \
+     -d '{"action":"ban","email":"spammer@example.com"}'   # suspends account + disables its links
 ```
 
 ## Tests

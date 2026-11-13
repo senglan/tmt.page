@@ -15,38 +15,68 @@
 </head>
 <body>
   <main>
+    <div class="topbar">
+      <span class="who" id="who" hidden></span>
+      <button class="link" id="signout" type="button" hidden>Sign out</button>
+    </div>
+
     <h1>Take me to…</h1>
-    <p class="lede">Free short links for anyone. Paste a long URL, pick a name, and share <code>tmt.page/your-name</code>.</p>
+    <p class="lede">Free short links. Paste a long URL, pick a name, and share <code>tmt.page/your-name</code>.</p>
 
-    <form id="create" novalidate>
-      <label>
-        Long URL
-        <span class="field">
-          <input id="url" name="url" type="url" inputmode="url" autocomplete="off" spellcheck="false"
-                 placeholder="https://example.com/a/very/long/link" required />
-        </span>
-      </label>
-
-      <label>
-        Custom name <span class="muted">(optional)</span>
-        <span class="field">
-          <span class="prefix">tmt.page/</span>
-          <input id="slug" name="slug" type="text" autocomplete="off" spellcheck="false" autocapitalize="none"
-                 maxlength="64" placeholder="random" />
-        </span>
-        <span class="hint" id="slug-hint" aria-live="polite"></span>
-      </label>
-
-      <div><button class="btn" id="submit" type="submit">Shorten</button></div>
-      <p class="error" id="error" role="alert"></p>
-    </form>
-
-    <section class="result" id="result" hidden aria-live="polite">
-      <div class="short">
-        <a id="short" href="#" target="_blank" rel="noopener"></a>
-        <button class="btn ghost" id="copy" type="button">Copy</button>
+    <!-- Signed out -->
+    <section id="signin" hidden>
+      <form id="signin-form" novalidate>
+        <label>
+          Sign in with your email to create links
+          <span class="field">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required />
+          </span>
+        </label>
+        <div><button class="btn" id="signin-btn" type="submit">Email me a sign-in link</button></div>
+        <p class="error" id="signin-error" role="alert"></p>
+        <p class="muted small">No password. We'll email you a link that signs you in. By signing in you agree to the <a href="/terms/">Terms</a>.</p>
+      </form>
+      <div class="result" id="sent" hidden>
+        <p><strong>Check your email.</strong> We sent a sign-in link to <span id="sent-to"></span>. It expires in 15 minutes.</p>
       </div>
-      <p class="dest">→ <span id="dest"></span></p>
+    </section>
+
+    <!-- Signed in -->
+    <section id="create-wrap" hidden>
+      <form id="create" novalidate>
+        <label>
+          Long URL
+          <span class="field">
+            <input id="url" name="url" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+                   placeholder="https://example.com/a/very/long/link" required />
+          </span>
+        </label>
+
+        <label>
+          Custom name <span class="muted">(optional)</span>
+          <span class="field">
+            <span class="prefix">tmt.page/</span>
+            <input id="slug" name="slug" type="text" autocomplete="off" spellcheck="false" autocapitalize="none"
+                   maxlength="64" placeholder="random" />
+          </span>
+          <span class="hint" id="slug-hint" aria-live="polite"></span>
+        </label>
+
+        <div><button class="btn" id="submit" type="submit">Shorten</button></div>
+        <p class="error" id="error" role="alert"></p>
+      </form>
+
+      <section class="result" id="result" hidden aria-live="polite">
+        <div class="short">
+          <a id="short" href="#" target="_blank" rel="noopener"></a>
+          <button class="btn ghost" id="copy" type="button">Copy</button>
+        </div>
+        <p class="dest">→ <span id="dest"></span></p>
+      </section>
+
+      <h2>Your links</h2>
+      <p class="muted" id="mine-empty">Links you make show up here.</p>
+      <ul class="mine" id="mine"></ul>
     </section>
 
     <h2>Tools</h2>
@@ -56,7 +86,9 @@
 
     <footer>
       Add <code>+</code> to any link (<code>tmt.page/name+</code>) to see where it goes before you click.
-      Links are public and permanent. Abuse is disabled on report.
+      Links are permanent and can't be edited.
+      <nav><a href="/terms/">Terms</a> · <a href="/privacy/">Privacy</a> · <a href="/abuse/">Report abuse</a></nav>
+      <p class="small">Operated by Mnemonic LLC.</p>
     </footer>
   </main>
   <script src="/assets/app.js" defer></script>

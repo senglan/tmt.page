@@ -3,7 +3,9 @@
 // GET  /api/admin?view=reports          → reported links, newest first
 // GET  /api/admin?view=recent           → 50 newest links
 // GET  /api/admin?slug=x                → one link + its reports
-// POST /api/admin { slug, action }      → action: "disable" | "enable" | "delete"
+// POST /api/admin { slug, action }      → action: "assign" | "hold-one" | "disable" | "enable" | "delete"
+// POST /api/admin { action: "hold", slugs: [...] }
+// POST /api/admin { action: "ban" | "unban", email }
 import { redis, tx, toObject, redisConfigured } from "./_lib/redis.js";
 import { SLUG_RE, RESERVED, checkUrl, json } from "./_lib/rules.js";
 
@@ -61,6 +63,20 @@ export async function POST(request) {
       held.push(slug);
     }
     return json({ ok: true, held: held.length, taken, invalid });
+  }
+
+  // Suspend an account and disable all its links: { action: "ban", email }   (or "unban")
+  if (body.action === "ban" || body.action === "unban") {
+    const email = String(body.email || "").trim().toLowerCase();
+    if (!email.includes("@")) return json({ error: "email required" }, 400);
+    const slugs = await redis("ZRANGE", `user:${email}:links`, 0, -1);
+    if (body.action === "ban") {
+      await redis("SADD", "banned", email);
+      for (const s of slugs) await redis("HSET", `link:${s}`, "status", "disabled");
+    } else {
+      await redis("SREM", "banned", email);
+    }
+    return json({ ok: true, email, action: body.action, links: slugs.length });
   }
 
   const slug = String(body.slug || "").toLowerCase();

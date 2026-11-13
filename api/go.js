@@ -23,6 +23,13 @@ export async function GET(request) {
   }
   if (!link.url) return notFound(slug);
 
+  if (link.status === "removed") {
+    return page({
+      title: "Link removed",
+      status: 410,
+      body: `<h1>This link was removed</h1><p><code>tmt.page/${esc(slug)}</code> was removed by the person who made it.</p>`,
+    });
+  }
   if (link.status === "disabled") {
     return page({
       title: "Link disabled",
