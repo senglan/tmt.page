@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy · tmt.page</title>
-  <meta name="theme-color" content="#141a17" />
+  <meta name="theme-color" content="#000000" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%E2%9E%A1%EF%B8%8F</text></svg>" />
   <link rel="stylesheet" href="/assets/site.css" />
+  <script src="/assets/theme.js"></script>
 </head>
 <body>
-  <header class="site"><a class="logo" href="/"><span class="mark">→</span>tmt.page</a></header>
+  <header class="site"><a class="logo" href="/"><span class="mark">→</span>tmt.page</a><div class="acct"><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div></header>
   <main class="legal">
     <h1>Privacy</h1>
     <p class="muted">Effective November 13, 2026</p>
@@ -19,7 +20,7 @@
     <h2>What we collect</h2>
     <ul>
       <li><strong>Your email address</strong>, when you sign in. We use it to send sign-in links, to tie links to the account that made them, and to act on abuse reports.</li>
-      <li><strong>A session cookie</strong> (<code>tmt_session</code>) that keeps you signed in for up to 30 days. It's strictly necessary; we don't use tracking or advertising cookies on the link service.</li>
+      <li><strong>A session cookie</strong> (<code>tmt_session</code>) that keeps you signed in for up to 30 days. It's strictly necessary; we don't use tracking or advertising cookies on the link service. Your light/dark theme choice is saved only in your own browser.</li>
       <li><strong>Your links</strong>: the destination URL, the short name, when it was created, and a running visit count. We don't record who visits a link.</li>
       <li><strong>A one-way hash of your IP address</strong> (salted SHA-256, not reversible to the address) when you create a link or request a sign-in email, used for rate limiting and abuse prevention.</li>
       <li><strong>Abuse reports</strong>: the reason given and a hashed IP of the reporter.</li>
