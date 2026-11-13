@@ -17,8 +17,8 @@ export function page({ title, body, status = 200, cache = "no-store" }) {
 <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
+<header class="site"><a class="logo" href="/"><span class="mark">→</span>tmt.page</a></header>
 <main>
-<p class="brand"><a href="/">tmt.page</a></p>
 ${body}
 </main>
 </body>
